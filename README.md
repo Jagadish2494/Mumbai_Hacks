@@ -132,7 +132,7 @@ VerifyNow/
 2. **For development:** Use Live Server extension in VS Code for auto-reload
 3. **Simulate workflows** via the Dashboard tab
 
-**Tech Stack:** HTML5, CSS3, Vanilla JavaScript | **Future:** Apache Kafka, Neo4j, BERT, Pinecone, RoBERTa NLI
+**Tech Stack:** HTML5, CSS3, JavaScript | **Future:** Apache Kafka, Neo4j, BERT, Pinecone, RoBERTa NLI
 
 ### Example Workflow
 
