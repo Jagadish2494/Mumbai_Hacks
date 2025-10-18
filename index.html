@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VerifyNow Prototype Dashboard</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🛡️</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-content">
+            <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 10 L30 40 L50 35 L70 40 Z" fill="#FDB913" opacity="0.8"/>
+                <path d="M25 45 L50 85 L75 45 L50 50 Z" fill="#1E3A5F"/>
+            </svg>
+            <p class="preloader-text">VerifyNow</p>
+        </div>
+    </div>
+
+    <!-- Main Wrapper -->
+    <div id="app" class="app-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 10 L30 40 L50 35 L70 40 Z" fill="#FDB913" opacity="0.9"/>
+                <path d="M25 45 L50 85 L75 45 L50 50 Z" fill="#FDB913"/>
+            </svg>
+            <h1 class="sidebar-title">VerifyNow</h1>
+        </div>            <button id="menuToggle" class="menu-toggle" aria-label="Toggle Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                    <line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+            </button>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="#" data-tab="dashboard" class="nav-link active" role="button" tabindex="0">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/>
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-tab="workflow" class="nav-link" role="button" tabindex="0">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M12 1v6m0 6v6M23 12h-6M7 12H1"/>
+                                <circle cx="18" cy="18" r="2"/>
+                                <circle cx="6" cy="18" r="2"/>
+                            </svg>
+                            <span>Workflow</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-tab="simulator" class="nav-link" role="button" tabindex="0">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="5 3 19 12 5 21 5 3"/>
+                            </svg>
+                            <span>Simulator</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-tab="history" class="nav-link" role="button" tabindex="0">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                                <line x1="12" y1="22.08" x2="12" y2="12"/>
+                            </svg>
+                            <span>History</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-tab="settings" class="nav-link" role="button" tabindex="0">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M12 1v6m0 6v6M23 12h-6M7 12H1M18.4 18.4l-4.24-4.24M9.84 9.84L5.6 5.6M18.4 5.6l-4.24 4.24M9.84 14.16L5.6 18.4"/>
+                            </svg>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>© 2025 VerifyNow</p>
+                
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main id="mainContent" class="main-content">
+            <!-- Top Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <div id="liveClock" class="live-clock">00:00:00</div>
+                    <div class="status-badge" id="statusBadge">
+                        <span class="status-dot pulsing"></span>
+                        <span id="statusText">Live Mode</span>
+                    </div>
+                </div>
+                <div class="toolbar-right">
+                    <button id="refreshBtn" class="toolbar-btn" title="Refresh">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"/>
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                        </svg>
+                    </button>
+                    <button id="exportBtn" class="toolbar-btn" title="Export">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <section id="dashboard" class="tab-content active">
+                <!-- Hero Header -->
+                <div class="hero-header">
+                    <h1 class="hero-title">Keep your social feeds factual!</h1>
+                    <p class="hero-subtitle">Autonomous Detection to Correction in &lt;30s</p>
+                    
+                </div>
+
+                <!-- Live Claim Checker -->
+                <div class="claim-checker-grid">
+                    <div class="claim-input-panel">
+                        <h2 class="section-title">Live Claim Checker</h2>
+                        <textarea 
+                            id="claimInput" 
+                            class="claim-input" 
+                            aria-label="Claim Input" 
+                            placeholder="Paste a tweet, post text, or URL"
+                            maxlength="280"
+                        ></textarea>
+                        <div class="char-counter">
+                            <span id="charCount">0</span>/280
+                        </div>
+                        <button id="analyzeBtn" class="btn-primary btn-analyze">
+                            Analyze Claim
+                            <span class="btn-ripple"></span>
+                        </button>
+                        
+                    </div>
+
+                    <div class="verdict-panel">
+                        <h2 class="section-title verdict-title">VerifyNow Verdict</h2>
+                        <div id="verdictContent" class="verdict-content hidden">
+                            <div class="verdict-summary">
+                                <strong>Claim:</strong> <span id="claimSummary">—</span>
+                            </div>
+                            <div class="verdict-pill-container">
+                                <span id="verdictPill" class="verdict-pill">Analyzing...</span>
+                            </div>
+                            <div class="confidence-ring-container">
+                                <div id="confidenceRing" class="confidence-ring">
+                                    <div class="confidence-text">
+                                        <span id="confidenceValue">—</span>%
+                                    </div>
+                                </div>
+                                <p class="confidence-label">Confidence Score</p>
+                            </div>
+                            <div class="explanation-accordion">
+                                <button class="accordion-header" id="explanationToggle">
+                                    <span>Detailed Explanation</span>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="6 9 12 15 18 9"/>
+                                    </svg>
+                                </button>
+                                <div class="accordion-content" id="explanationContent">
+                                    <p id="explanationText">Sources contradict the claim. Cross-reference with official databases suggests inconsistencies.</p>
+                                    <button class="btn-secondary btn-mock-source">View NIA Database</button>
+                                </div>
+                            </div>
+                            <div class="verdict-actions">
+                                <button id="shareBtn" class="btn-secondary">Share</button>
+                                <button id="reviewBtn" class="btn-secondary">Human Review</button>
+                            </div>
+                        </div>
+                        <div id="verdictPlaceholder" class="verdict-placeholder">
+                            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="1">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <p>Enter a claim to begin analysis</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agent Activity & Graph Grid -->
+                <div class="dashboard-bottom-grid">
+                    <!-- Agent Activity Cards -->
+                    <div class="agent-activity-section">
+                        <h2 class="section-title">Agent Activity</h2>
+                        <div class="agent-cards">
+                            <!-- Detection Agent -->
+                            <div class="agent-card" data-agent="detection">
+                                <div class="agent-header">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                    <h3>Detection Agent</h3>
+                                    <span class="status-dot" data-status="idle"></span>
+                                </div>
+                                <div class="agent-output">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 0%"></div>
+                                    </div>
+                                    <p class="agent-text">Monitoring social feeds...</p>
+                                </div>
+                            </div>
+
+                            <!-- Cluster Agent -->
+                            <div class="agent-card" data-agent="cluster">
+                                <div class="agent-header">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="2">
+                                        <circle cx="12" cy="5" r="3"/>
+                                        <circle cx="6" cy="17" r="3"/>
+                                        <circle cx="18" cy="17" r="3"/>
+                                        <line x1="12" y1="8" x2="12" y2="14"/>
+                                        <line x1="12" y1="14" x2="9" y2="14"/>
+                                        <line x1="12" y1="14" x2="15" y2="14"/>
+                                    </svg>
+                                    <h3>Cluster Agent</h3>
+                                    <span class="status-dot" data-status="idle"></span>
+                                </div>
+                                <div class="agent-output">
+                                    <p class="agent-text">Awaiting detection...</p>
+                                </div>
+                            </div>
+
+                            <!-- Verification Agent -->
+                            <div class="agent-card" data-agent="verification">
+                                <div class="agent-header">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                        <polyline points="22 4 12 14.01 9 11.01"/>
+                                    </svg>
+                                    <h3>Verification Agent</h3>
+                                    <span class="status-dot" data-status="idle"></span>
+                                </div>
+                                <div class="agent-output">
+                                    <p class="agent-text">Ready to verify...</p>
+                                </div>
+                            </div>
+
+                            <!-- Response Agent -->
+                            <div class="agent-card" data-agent="response">
+                                <div class="agent-header">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="2">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                    </svg>
+                                    <h3>Response Agent</h3>
+                                    <span class="status-dot" data-status="idle"></span>
+                                </div>
+                                <div class="agent-output">
+                                    <p class="agent-text">Standing by...</p>
+                                </div>
+                            </div>
+
+                            <!-- Audit Agent -->
+                            <div class="agent-card" data-agent="audit">
+                                <div class="agent-header">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                        <polyline points="10 9 9 9 8 9"/>
+                                    </svg>
+                                    <h3>Audit Agent</h3>
+                                    <span class="status-dot" data-status="idle"></span>
+                                </div>
+                                <div class="agent-output">
+                                    <p class="agent-text">Logging activities...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coordination Graph -->
+                    <div class="graph-section">
+                        <h2 class="section-title">Coordination Graph</h2>
+                        <div class="cib-score-container">
+                            <div class="cib-gauge">
+                                <svg width="100" height="100" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="40" fill="none" stroke="#E5E7EB" stroke-width="8"/>
+                                    <circle id="cibCircle" cx="50" cy="50" r="40" fill="none" stroke="#3B82F6" stroke-width="8" 
+                                            stroke-dasharray="251.2" stroke-dashoffset="251.2" transform="rotate(-90 50 50)"/>
+                                </svg>
+                                <div class="cib-text">
+                                    <span id="cibValue">0.0</span>
+                                    <span class="cib-label">CIB Score</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="position: relative;">
+                            <canvas id="coordGraph" class="coord-canvas"></canvas>
+                            <div id="graphPlaceholder" class="graph-placeholder">
+                                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <line x1="12" y1="2" x2="12" y2="7"/>
+                                    <line x1="12" y1="17" x2="12" y2="22"/>
+                                    <line x1="2" y1="12" x2="7" y2="12"/>
+                                    <line x1="17" y1="12" x2="22" y2="12"/>
+                                </svg>
+                                <p>Run an analysis to view network graph</p>
+                            </div>
+                        </div>
+                        <div id="graphLegend" class="graph-legend" style="display: none;">
+                            <div class="legend-item">
+                                <div class="legend-color verified"></div>
+                                <span>Verified Accounts</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color suspicious"></div>
+                                <span>Suspicious Activity</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color bot"></div>
+                                <span>Bot Accounts</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Workflow Tab -->
+            <section id="workflow" class="tab-content">
+                <div class="workflow-header">
+                    <h1 class="page-title">Agentic Pipeline</h1>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="stepByStepToggle">
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-label">Step-by-Step Mode</span>
+                    </label>
+                </div>
+
+                <div class="workflow-timeline">
+                    <!-- Detection Step -->
+                    <div class="workflow-step" data-step="1">
+                        <div class="step-connector"></div>
+                        <div class="step-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </div>
+                        <div class="step-content">
+                            <button class="step-header" data-accordion="step1">
+                                <h3>1. Detection Agent</h3>
+                                <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </button>
+                            <div class="step-body" id="step1">
+                                <p class="step-description">Continuously monitors social media platforms using real-time APIs and keyword tracking to identify viral claims and anomalous spikes in engagement patterns.</p>
+                                <button class="btn-secondary btn-run-step" data-step="detection">Run Detection</button>
+                                <div class="step-output">
+                                    <h4>Sample Output:</h4>
+                                    <div class="mock-output">
+                                        <p><strong>Platform:</strong> Twitter/X</p>
+                                        <p><strong>Detected Claim:</strong> "Breaking: Major security incident in Mumbai"</p>
+                                        <p><strong>Engagement Spike:</strong> 340% increase in 15 minutes</p>
+                                        <p><strong>Initial Risk Score:</strong> High (0.82)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cluster Step -->
+                    <div class="workflow-step" data-step="2">
+                        <div class="step-connector"></div>
+                        <div class="step-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="5" r="3"/>
+                                <circle cx="6" cy="17" r="3"/>
+                                <circle cx="18" cy="17" r="3"/>
+                                <line x1="12" y1="8" x2="12" y2="14"/>
+                                <line x1="12" y1="14" x2="9" y2="14"/>
+                                <line x1="12" y1="14" x2="15" y2="14"/>
+                            </svg>
+                        </div>
+                        <div class="step-content">
+                            <button class="step-header" data-accordion="step2">
+                                <h3>2. Cluster Agent</h3>
+                                <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </button>
+                            <div class="step-body collapsed" id="step2">
+                                <p class="step-description">Analyzes network patterns, identifies coordinated behavior, detects bot accounts, and maps the spread velocity of misinformation across platforms.</p>
+                                <button class="btn-secondary btn-run-step" data-step="cluster">Run Clustering</button>
+                                <div class="step-output">
+                                    <h4>Sample Output:</h4>
+                                    <div class="mock-output">
+                                        <p><strong>Total Accounts:</strong> 1,247</p>
+                                        <p><strong>Suspected Bots:</strong> 23% (287 accounts)</p>
+                                        <p><strong>Coordination Score:</strong> 0.68 (Moderate)</p>
+                                        <p><strong>Primary Cluster:</strong> 5 high-influence nodes</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Verification Step -->
+                    <div class="workflow-step" data-step="3">
+                        <div class="step-connector"></div>
+                        <div class="step-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                        </div>
+                        <div class="step-content">
+                            <button class="step-header" data-accordion="step3">
+                                <h3>3. Verification Agent</h3>
+                                <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </button>
+                            <div class="step-body collapsed" id="step3">
+                                <p class="step-description">Cross-references claims against authoritative databases (PIB, NIA, WHO), performs RAG-based fact-checking, and utilizes multimodal analysis for images/videos.</p>
+                                <button class="btn-secondary btn-run-step" data-step="verification">Run Verification</button>
+                                <div class="step-output">
+                                    <h4>Sample Output:</h4>
+                                    <div class="mock-output">
+                                        <p><strong>Verdict:</strong> <span class="verdict-badge false">FALSE</span></p>
+                                        <p><strong>Confidence:</strong> 87%</p>
+                                        <p><strong>Sources Checked:</strong></p>
+                                        <ul>
+                                            <li>PIB Fact Check: No matching incident</li>
+                                            <li>Mumbai Police Twitter: No alerts</li>
+                                            <li>News Archive: No credible reports</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Response Step -->
+                    <div class="workflow-step" data-step="4">
+                        <div class="step-connector"></div>
+                        <div class="step-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="step-content">
+                            <button class="step-header" data-accordion="step4">
+                                <h3>4. Response Agent</h3>
+                                <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </button>
+                            <div class="step-body collapsed" id="step4">
+                                <p class="step-description">Generates context-aware counter-narratives, drafts correction posts with citations, and schedules automated responses to high-engagement threads.</p>
+                                <button class="btn-secondary btn-run-step" data-step="response">Generate Response</button>
+                                <div class="step-output">
+                                    <h4>Generated Response:</h4>
+                                    <div class="mock-output response-draft">
+                                        <textarea readonly rows="4">⚠️ FACT CHECK: The claim about a security incident in Mumbai is FALSE. 
+
+✅ Verified by: Mumbai Police (@MumbaiPolice), PIB Fact Check
+📅 Last Updated: Today, 14:30 IST
+
+Please verify information from official sources before sharing. #FactCheck #VerifyNow</textarea>
+                                        <button class="btn-secondary btn-copy">Copy Response</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Audit Step -->
+                    <div class="workflow-step" data-step="5">
+                        <div class="step-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                        </div>
+                        <div class="step-content">
+                            <button class="step-header" data-accordion="step5">
+                                <h3>5. Audit Agent</h3>
+                                <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </button>
+                            <div class="step-body collapsed" id="step5">
+                                <p class="step-description">Logs all agent decisions, maintains transparency records, enables human review workflows, and tracks performance metrics for continuous improvement.</p>
+                                <button class="btn-secondary btn-run-step" data-step="audit">View Audit Log</button>
+                                <div class="step-output">
+                                    <h4>Audit Summary:</h4>
+                                    <div class="mock-output">
+                                        <table class="audit-table">
+                                            <tr>
+                                                <th>Timestamp</th>
+                                                <th>Action</th>
+                                                <th>Confidence</th>
+                                                <th>Status</th>
+                                            </tr>
+                                            <tr>
+                                                <td>14:28:15</td>
+                                                <td>Detection Initiated</td>
+                                                <td>—</td>
+                                                <td>✓</td>
+                                            </tr>
+                                            <tr>
+                                                <td>14:28:18</td>
+                                                <td>Clustering Complete</td>
+                                                <td>0.68</td>
+                                                <td>✓</td>
+                                            </tr>
+                                            <tr>
+                                                <td>14:28:25</td>
+                                                <td>Verification: FALSE</td>
+                                                <td>0.87</td>
+                                                <td>✓</td>
+                                            </tr>
+                                            <tr>
+                                                <td>14:28:30</td>
+                                                <td>Response Generated</td>
+                                                <td>—</td>
+                                                <td>✓</td>
+                                            </tr>
+                                        </table>
+                                        <div class="rating-widget">
+                                            <p>Rate this analysis:</p>
+                                            <div class="star-rating">
+                                                <span class="star">★</span>
+                                                <span class="star">★</span>
+                                                <span class="star">★</span>
+                                                <span class="star">★</span>
+                                                <span class="star">★</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Simulator Tab -->
+            <section id="simulator" class="tab-content">
+                <div class="simulator-container">
+                    <div class="simulator-header">
+                        <h1 class="page-title">Live Simulator</h1>
+                        <button id="closeSimulator" class="btn-close-sim">Close</button>
+                    </div>
+
+                    <div class="simulator-controls">
+                        <div class="sim-input-group">
+                            <label for="simKeyword">Enter Keyword or Use Case:</label>
+                            <input type="text" id="simKeyword" placeholder="e.g., Mumbai Flood, Election Deepfake" />
+                        </div>
+                        <div class="sim-input-group">
+                            <label for="simUseCase">Quick Use Cases:</label>
+                            <select id="simUseCase">
+                                <option value="">— Select a scenario —</option>
+                                <option value="Terrorist Attack in Jammu (False)">Terrorist Attack in Jammu (False)</option>
+                                <option value="Mumbai Bridge Collapse (Refuted)">Mumbai Bridge Collapse (Refuted)</option>
+                                <option value="Election Deepfake Video (Unverified)">Election Deepfake Video (Unverified)</option>
+                                <option value="Natural Disaster Image Manipulation">Natural Disaster - Image Manipulation</option>
+                                <option value="Celebrity Death Hoax">Celebrity Death Hoax</option>
+                            </select>
+                        </div>
+                        <button id="runPipelineBtn" class="btn-primary">Run Full Pipeline</button>
+                    </div>
+
+                    <div class="simulator-body">
+                        <div class="console-log">
+                            <h3>Pipeline Console</h3>
+                            <div id="consoleOutput" class="console-output">
+                                <p class="console-line">> System ready. Awaiting input...</p>
+                            </div>
+                        </div>
+
+                        <div class="live-feed">
+                            <h3>Live Social Feed</h3>
+                            <div class="feed-carousel">
+                                <button class="carousel-btn prev" id="carouselPrev">‹</button>
+                                <div id="feedCards" class="feed-cards">
+                                    <!-- Feed cards will be injected here -->
+                                </div>
+                                <button class="carousel-btn next" id="carouselNext">›</button>
+                            </div>
+                        </div>
+
+                        <div class="metrics-panel">
+                            <h3>Impact Metrics</h3>
+                            <div class="metrics-bars">
+                                <div class="metric-item">
+                                    <span class="metric-label">Retweet Drop:</span>
+                                    <div class="metric-bar">
+                                        <div class="metric-fill" id="metricRetweet" style="width: 0%"></div>
+                                        <span class="metric-value">0%</span>
+                                    </div>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Engagement Reduction:</span>
+                                    <div class="metric-bar">
+                                        <div class="metric-fill" id="metricEngagement" style="width: 0%"></div>
+                                        <span class="metric-value">0%</span>
+                                    </div>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Bot Network Disruption:</span>
+                                    <div class="metric-bar">
+                                        <div class="metric-fill" id="metricBot" style="width: 0%"></div>
+                                        <span class="metric-value">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Tab -->
+            <section id="history" class="tab-content">
+                <div class="history-header">
+                    <h1 class="page-title">Analysis History</h1>
+                    <div class="history-controls">
+                        <input type="text" id="historySearch" class="search-input" placeholder="Search claims..." />
+                        <button id="exportHistoryBtn" class="btn-secondary">Export CSV</button>
+                    </div>
+                </div>
+
+                <div class="history-table-container">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th data-sort="id">ID <span class="sort-icon">⇅</span></th>
+                                <th data-sort="claim">Claim</th>
+                                <th data-sort="verdict">Verdict</th>
+                                <th data-sort="confidence">Confidence <span class="sort-icon">⇅</span></th>
+                                <th data-sort="timestamp">Timestamp <span class="sort-icon">⇅</span></th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <!-- Rows will be dynamically populated -->
+                        </tbody>
+                    </table>
+                    <div id="historyEmpty" class="empty-state">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="1">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        </svg>
+                        <p>No analysis history yet</p>
+                        <p class="empty-subtitle">Run some claims to see them here</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Tab -->
+            <section id="settings" class="tab-content">
+                <div class="settings-container">
+                    <h1 class="page-title">Settings & Configuration</h1>
+
+                    <div class="settings-section">
+                        <h2 class="settings-subtitle">Simulation Preferences</h2>
+                        <div class="setting-item">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="autoSimToggle" checked>
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">Enable Auto-Simulation</span>
+                            </label>
+                            <p class="setting-description">Automatically run sample analysis on dashboard load</p>
+                        </div>
+                        <div class="setting-item">
+                            <label for="simSpeed">Simulation Speed:</label>
+                            <div class="slider-container">
+                                <input type="range" id="simSpeed" min="1" max="3" value="2" step="1">
+                                <div class="slider-labels">
+                                    <span>Slow</span>
+                                    <span>Medium</span>
+                                    <span>Fast</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h2 class="settings-subtitle">Data Management</h2>
+                        <button id="resetDataBtn" class="btn-danger">Reset Demo Data</button>
+                        <p class="setting-description">Clear all history and reset to default state</p>
+                    </div>
+
+                    <div class="settings-section">
+                        <h2 class="settings-subtitle">Feedback</h2>
+                        <form id="feedbackForm" class="feedback-form">
+                            <div class="form-group">
+                                <label for="feedbackRating">Rate Your Experience:</label>
+                                <div class="star-rating interactive" id="feedbackStars">
+                                    <span class="star" data-rating="1">★</span>
+                                    <span class="star" data-rating="2">★</span>
+                                    <span class="star" data-rating="3">★</span>
+                                    <span class="star" data-rating="4">★</span>
+                                    <span class="star" data-rating="5">★</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="feedbackComments">Comments:</label>
+                                <textarea id="feedbackComments" rows="4" placeholder="Share your thoughts..."></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary">Submit Feedback</button>
+                        </form>
+                    </div>
+
+                    
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal: Human Review -->
+    <div id="reviewModal" class="modal" role="dialog" aria-labelledby="reviewModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="reviewModalTitle">Human Review Request</h2>
+                <button class="modal-close" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Submit this claim for expert human review and verification.</p>
+                <textarea id="reviewNotes" placeholder="Add notes for the review team..." rows="4"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary modal-cancel">Cancel</button>
+                <button class="btn-primary modal-submit">Submit Review</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Analyzing claim...</p>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"/>
+        </svg>
+    </button>
+</body>
+</html>
