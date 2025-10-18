@@ -6,9 +6,9 @@ A multi-agent AI system for autonomous real-time detection, verification, and re
 
 ## 🎥 Prototype Demo
 
-[![Watch the Demo](https://img.youtube.com/vi/[VIDEO_ID]/0.jpg)](https://www.youtube.com/watch?v=[VIDEO_ID])
+[![Watch the Demo](https://img.youtube.com/vi/eR6bSLrMBqs/0.jpg)](https://youtu.be/eR6bSLrMBqs?si=FEkKkAPJQ0aZoG8o)
 
-> **Note:** Insert your YouTube video ID here to auto-embed the prototype walkthrough.
+> **[Click to watch the prototype walkthrough](https://youtu.be/eR6bSLrMBqs?si=FEkKkAPJQ0aZoG8o)**
 
 ---
 
@@ -124,17 +124,15 @@ VerifyNow/
 └── README.md           # This file
 ```
 
-> **Note:** This is a static HTML/CSS/JS prototype; no server-side components yet.
-
 ---
 
 ## ⚡ Quick Start
 
-**No installation required**—pure vanilla HTML/CSS/JS.
-
 1. **Open `index.html` in any modern browser** (Chrome/Firefox recommended)
 2. **For development:** Use Live Server extension in VS Code for auto-reload
 3. **Simulate workflows** via the Dashboard tab
+
+**Tech Stack:** HTML5, CSS3, Vanilla JavaScript | **Future:** Apache Kafka, Neo4j, BERT, Pinecone, RoBERTa NLI
 
 ### Example Workflow
 
@@ -179,5 +177,3 @@ Output:
 **Contributions welcome!** | Star ⭐ this repo if you find it useful
 
 ---
-
-**Tech Stack:** HTML5, CSS3, Vanilla JavaScript | **Future:** Apache Kafka, Neo4j, BERT, Pinecone, RoBERTa NLI
